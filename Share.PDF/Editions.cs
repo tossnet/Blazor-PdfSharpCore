@@ -1,7 +1,6 @@
 ﻿namespace Share.PDF;
 
 using PdfSharpCore.Drawing;
-using PdfSharpCore.Fonts;
 using PdfSharpCore.Pdf;
 
 public static class Editions

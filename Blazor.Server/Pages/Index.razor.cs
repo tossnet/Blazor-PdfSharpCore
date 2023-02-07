@@ -17,10 +17,7 @@ public partial class Index
 	{
 		if (firstRender)
 		{
-			if (JsModule == null)
-			{
-				JsModule = await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
-			}
+			JsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
 
 			if (PdfSharpCore.Fonts.GlobalFontSettings.FontResolver is not FontResolver)
 			{

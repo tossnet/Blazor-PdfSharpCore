@@ -4,11 +4,11 @@ using Blazor.Wasm.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using PdfSharpCore.Fonts;
+using Share.PDF.Models;
 
 public partial class Index
 {
 	[Inject] public IJSRuntime JS { get; set; }
-	[Inject] public HttpClient Client { get; set; }
 	[Inject] public FontServices FontService { get; set; }
 
 	private const string JAVASCRIPT_FILE = "./Pages/Index.razor.js";
@@ -19,12 +19,9 @@ public partial class Index
 	{
 		if (firstRender)
 		{
-			if (JsModule == null)
-			{
-				JsModule = await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
-			}
+			JsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
 
-			byte[] font = await FontService.LoadFontData("OpenSans-Regular.ttf");
+			Fonts font = await FontService.LoadFonts();
 
 			try
 			{
@@ -32,7 +29,7 @@ public partial class Index
 				//{
 				//if (GlobalFontSettings.FontResolver  == null)
 				//{
-				GlobalFontSettings.FontResolver = new CustomFontResolver(Client, font);
+				GlobalFontSettings.FontResolver = new CustomFontResolver(font);
 				//}
 			}
 			catch (Exception)
