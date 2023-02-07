@@ -26,10 +26,17 @@ public partial class Index
 		}
 	}
 
-	async Task PDF()
+	async Task HelloWord()
 	{
 		byte[] pdf = Share.PDF.Editions.HelloWord();
 
-		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "exemple.pdf", pdf);
+		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
+	}
+
+	async Task DrawGraphics()
+	{
+		byte[] pdf = Share.PDF.Editions.DrawGraphics();
+
+		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
 	}
 }
