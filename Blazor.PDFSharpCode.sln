@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33326.253
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Server", "Blazor.Server\Blazor.Server.csproj", "{0556C967-14F2-4A3A-8DEC-3B22FBA07CB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Wasm", "Blazor.Wasm\Blazor.Wasm.csproj", "{894F537E-EF80-4737-B02D-D538D2B7F8C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Wasm", "Blazor.Wasm\Blazor.Wasm.csproj", "{894F537E-EF80-4737-B02D-D538D2B7F8C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Share.PDF", "Share.PDF\Share.PDF.csproj", "{3B7A21C1-EF38-41C9-9742-296C866B9241}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{894F537E-EF80-4737-B02D-D538D2B7F8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{894F537E-EF80-4737-B02D-D538D2B7F8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{894F537E-EF80-4737-B02D-D538D2B7F8C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B7A21C1-EF38-41C9-9742-296C866B9241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B7A21C1-EF38-41C9-9742-296C866B9241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B7A21C1-EF38-41C9-9742-296C866B9241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B7A21C1-EF38-41C9-9742-296C866B9241}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
