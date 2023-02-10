@@ -13,18 +13,19 @@ using CommonModels;
 
 public static class Editions
 {
-	public static byte[] HelloWord()
+
+	private static PdfDocument? document;
+
+    public static byte[] HelloWord()
 	{
 		// Create Document with info
-		PdfDocument document = new();
-		DocumentInfo(document, "Hello world");
+		document = new();
+		DocumentInfo("Hello world");
 
 		// Create new page
 		var page = document.AddPage();
-
 		var gfx = XGraphics.FromPdfPage(page);
-
-		var font = new XFont("OpenSans-Regular", 20, XFontStyle.Regular);
+        XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular);
 
 		var textColor = XBrushes.Black;
 		var layout = new XRect(0, 0, page.Width, page.Height);
@@ -32,7 +33,7 @@ public static class Editions
 
 		gfx.DrawString("Hello World!", font, textColor, layout, format);
 
-        SamplePage1(document);
+        SamplePage1();
 
         MemoryStream PdfStream = new();
 		document.Save(PdfStream);
@@ -44,14 +45,12 @@ public static class Editions
 	public static byte[] PDFTable(WeatherForecast[] forecasts)
 	{
 		// Create Document with info
-		PdfDocument document = new();
-		DocumentInfo(document, "Table");
+		document = new();
+		DocumentInfo("Table");
 
 		// Create new page
 		PdfPage page = document.AddPage();
-
 		XGraphics gfx = XGraphics.FromPdfPage(page);
-
 		XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular);
 
         // You always need a MigraDocCore document for rendering.
@@ -78,7 +77,7 @@ public static class Editions
 		return PdfStream.ToArray();
 	}
 
-	static void SamplePage1(PdfDocument document)
+	static void SamplePage1()
 	{
 		PdfPage page = document.AddPage();
 		XGraphics gfx = XGraphics.FromPdfPage(page);
@@ -136,14 +135,15 @@ public static class Editions
 		style.Font.Name = "OpenSans-Regular";
 
 		style = doc.Styles[StyleNames.Header];
-		style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
+        style.Font.Name = "OpenSans-Regular";
+        style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
 
 		style = doc.Styles[StyleNames.Footer];
+		style.Font.Name = "OpenSans-Regular";
 		style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
 
 		// Create a new style called Table based on style Normal
 		style = doc.Styles.AddStyle("Table", "Normal");
-		style.Font.Name = "OpenSans-Regular";
 		style.Font.Name = "OpenSans-Regular";
 		style.Font.Size = 9;
 
@@ -331,18 +331,17 @@ public static class Editions
 	public static byte[] DrawGraphics()
 	{
 		// Create Document with info
-		PdfDocument document = new();
-		DocumentInfo(document, "Hello world");
+		document = new();
+		DocumentInfo("Hello world");
 
 		// Create new page
 		var page = document.AddPage();
-
 		var gfx = XGraphics.FromPdfPage(page);
 
-		DrawTitle(document, page, gfx, "Some graphics");
+        DrawHeaderBottomText(page, gfx, "Some graphics");
 
 
-		var font = new XFont("OpenSans-Regular", 20, XFontStyle.Regular);
+        XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular);
 
 		var textColor = XBrushes.Black;
 		var layout = new XRect(0, 0, page.Width, page.Height);
@@ -357,13 +356,16 @@ public static class Editions
 
 		gfx = XGraphics.FromPdfPage(page);
 
-		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(1, 0.68, 0, 0.12)), new XRect(30, 60, 50, 50));
+
+        DrawHeaderBottomText(page, gfx, "Some graphics");
+
+        gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(1, 0.68, 0, 0.12)), new XRect(30, 60, 50, 50));
 		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0, 0.70, 1, 0)), new XRect(550, 60, 50, 50));
 
-		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0, 0, 0, 0)), new XRect(90, 100, 50, 50));
-		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0, 0, 0, 0)), new XRect(150, 100, 50, 50));
+		gfx.DrawRoundedRectangle(new XSolidBrush(XColor.FromArgb(255, 87, 202, 92)), new XRect(90, 100, 50, 50), new XSize(50, 50));
+		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0, 1, 0, 0)), new XRect(150, 100, 50, 50));
 
-		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0.7, 0, 0.70, 1, 0)), new XRect(90, 100, 50, 50));
+		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0.7, 0, 0.70, 1, 0)), new XRect(90, 200, 50, 50));
 		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0.5, 0, 0.70, 1, 0)), new XRect(150, 100, 50, 50));
 
 		gfx.DrawRectangle(new XSolidBrush(XColor.FromCmyk(0.35, 0.15, 0, 0.08)), new XRect(50, 360, 50, 50));
@@ -377,7 +379,7 @@ public static class Editions
 	}
 
 
-	private static void DocumentInfo(PdfDocument document, string title)
+	private static void DocumentInfo(string title)
 	{
 		document.Info.Title = title;
 		document.Info.Author = "Christophe Peugnet";
@@ -385,11 +387,11 @@ public static class Editions
 	}
 
 
-	private static void DrawTitle(PdfDocument document, PdfPage page, XGraphics gfx, string title)
+	private static void DrawHeaderBottomText(PdfPage page, XGraphics gfx, string title)
 	{
 		XRect rect = new(new XPoint(), gfx.PageSize);
 		rect.Inflate(-10, -15);
-		XFont font = new XFont("OpenSans-Regular", 14, XFontStyle.Bold);
+		XFont font = new("OpenSans-Regular", 14, XFontStyle.Bold);
 		gfx.DrawString(title, font, XBrushes.MidnightBlue, rect, XStringFormats.TopCenter);
 
 		rect.Offset(0, 5);
