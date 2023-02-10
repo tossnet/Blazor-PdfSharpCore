@@ -14,9 +14,13 @@ public class CustomFontResolver : IFontResolver
 		_fontLoaded = FontLoaded;
 	}
 
-	public string DefaultFontName => throw new NotImplementedException();
+	//public string DefaultFontName => throw new NotImplementedException();
 
-	public byte[] GetFont(string faceName)
+    public string DefaultFontName => "OpenSans-Regular";
+
+
+
+    public byte[] GetFont(string faceName)
 	{
 		// causes an error because it blocks the UI (maybe the multi-thread in
 		// .NET8 will unblock this problem) :
@@ -53,7 +57,7 @@ public class CustomFontResolver : IFontResolver
 				return new FontResolverInfo("OpenSans-Regular.ttf");
 			}
 		}
-		return null;
+		return new FontResolverInfo("OpenSans-Regular.ttf"); //null;
 	}
 
 	//public async Task<byte[]> LoadFontData(string name)

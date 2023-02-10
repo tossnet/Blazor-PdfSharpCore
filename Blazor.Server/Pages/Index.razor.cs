@@ -2,18 +2,19 @@ namespace Blazor.Server.Pages;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+
 using PdfSharpCore.Fonts;
 using PdfSharpCore.Utils;
 
 public partial class Index
 {
 	[Inject] public IJSRuntime JS { get; set; }
+    [Inject] public NavigationManager nav { get; set; }
 
-	private const string JAVASCRIPT_FILE = "./Pages/Index.razor.js";
+    private const string JAVASCRIPT_FILE = "./js/javascript.js";
 	private IJSObjectReference JsModule { get; set; } = default!;
 
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
 		{
@@ -23,7 +24,7 @@ public partial class Index
 			{
 				GlobalFontSettings.FontResolver = new FontResolver();
 			}
-		}
+        }
 	}
 
 	async Task HelloWord()
@@ -38,5 +39,10 @@ public partial class Index
 		byte[] pdf = Share.PDF.Editions.DrawGraphics();
 
 		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
-	}
+    }
+
+    void PrintTable()
+    {
+        nav.NavigateTo("fetchdata");
+    }
 }

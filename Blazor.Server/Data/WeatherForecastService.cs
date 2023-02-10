@@ -1,3 +1,5 @@
+using CommonModels;
+
 namespace Blazor.Server.Data
 {
     public class WeatherForecastService

@@ -10,8 +10,9 @@ public partial class Index
 {
 	[Inject] public IJSRuntime JS { get; set; }
 	[Inject] public FontServices FontService { get; set; }
+    [Inject] public NavigationManager nav { get; set; }
 
-	private const string JAVASCRIPT_FILE = "./Pages/Index.razor.js";
+    private const string JAVASCRIPT_FILE = "./js/javascript.js";
 	private IJSObjectReference JsModule { get; set; } = default!;
 
 
@@ -32,8 +33,9 @@ public partial class Index
 				GlobalFontSettings.FontResolver = new CustomFontResolver(font);
 				//}
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				Console.WriteLine(e.Message.ToString());
 			}
 		}
 	}
@@ -53,4 +55,8 @@ public partial class Index
 		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
 	}
 	
+	void PrintTable()
+	{
+		nav.NavigateTo("fetchdata");
+	}
 }
