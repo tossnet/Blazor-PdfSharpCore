@@ -52,11 +52,18 @@ public partial class Index
 	{
 		byte[] pdf = Share.PDF.Editions.DrawGraphics();
 
-		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
+		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "graphics.pdf", pdf);
 	}
 	
 	void PrintTable()
 	{
 		nav.NavigateTo("fetchdata");
+	}
+
+	async Task PrintUnicode()
+	{ 
+		byte[] pdf = Share.PDF.Unicode.UnicodeSample();
+	
+	    await JsModule.InvokeVoidAsync("BlazorDownloadFile", "unicode.pdf", pdf);
 	}
 }
