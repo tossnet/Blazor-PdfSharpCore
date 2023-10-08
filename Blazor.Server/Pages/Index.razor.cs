@@ -45,4 +45,18 @@ public partial class Index
     {
         nav.NavigateTo("fetchdata");
     }
+
+	async Task MixMigraSharpClick()
+	{
+        byte[] pdf = Share.PDF.MixMigraSharp.GetRenderer();
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "mixMigraSharp.pdf", pdf);
+    }
+
+	async Task MultiPageClick()
+	{
+        byte[] pdf = Share.PDF.MultiPages.GetRenderer();
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "MultiPages.pdf", pdf);
+    }
 }

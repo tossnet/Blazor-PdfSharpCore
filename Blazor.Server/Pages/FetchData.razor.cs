@@ -39,4 +39,11 @@ public partial class FetchData
 
 		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "table.pdf", pdf);
 	}
+
+
+    async Task PDFAdvancedTable()
+    {
+        byte[] pdf = Share.PDF.Tables.PDFAdvancedTable();
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "advancedtable.pdf", pdf);
+    }
 }

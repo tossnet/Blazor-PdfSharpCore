@@ -3,7 +3,6 @@
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
 
-using PdfSharpCore.Drawing.Layout;
 using CommonModels;
 using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.DocumentObjectModel;
@@ -64,7 +63,7 @@ public static class Tables
         // Create new page
         PdfPage page = document.AddPage();
         XGraphics gfx = XGraphics.FromPdfPage(page);
-        XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular, options);
+        XFont font = new("Arial", 20, XFontStyle.Regular, options);
 
         // You always need a MigraDocCore document for rendering.
         MigraDocCore.DocumentObjectModel.Document doc = new();
@@ -74,7 +73,7 @@ public static class Tables
         DefineStyles(doc);
 
 
-        Table table = CreateAdvencedTable(doc);
+        Table table = CreateAdvancedTable(doc);
 
         // Create a renderer and prepare (=layout) the document
         MigraDocCore.Rendering.DocumentRenderer docRenderer = new(doc);
@@ -98,7 +97,7 @@ public static class Tables
         // Because all styles are derived from Normal, the next line changes the
         // font of the whole document. Or, more exactly, it changes the font of
         // all styles and paragraphs that do not redefine the font.
-        style.Font.Name = "OpenSans-Regular";
+        style.Font.Name = "Arial";
 
         style = doc.Styles[StyleNames.Header];
         style.Font.Name = "OpenSans-Regular";
@@ -173,7 +172,7 @@ public static class Tables
         return table;
     }
 
-    private static Table CreateAdvencedTable(Document document)
+    private static Table CreateAdvancedTable(Document document)
     {
         document.LastSection.AddParagraph("Advanced Table", "Heading2");
 
@@ -241,8 +240,6 @@ public static class Tables
         table.SetEdge(0, 0, 6, 2, Edge.Box, BorderStyle.Single, 0.75, Color.Empty);
 
         //doc.LastSection.Add(table);
-
-
 
 
 

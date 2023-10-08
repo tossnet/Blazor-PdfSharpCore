@@ -7,6 +7,7 @@ using PdfSharpCore.Drawing;
 using MigraDocCore.Rendering;
 using MigraDocCore.DocumentObjectModel;
 using Section = MigraDocCore.DocumentObjectModel.Section;
+using PdfSharpCore.Drawing.Layout;
 
 public static class Editions
 {
@@ -22,15 +23,18 @@ public static class Editions
 		// Create new page
 		var page = document.AddPage();
 		var gfx = XGraphics.FromPdfPage(page);
-        XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular);
+        //XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular);
+        XFont font = new("Arial", 20, XFontStyle.Regular);
 
-		var textColor = XBrushes.Black;
+        var textColor = XBrushes.Black;
 		var layout = new XRect(0, 0, page.Width, page.Height);
 		var format = XStringFormats.Center;
 
 		gfx.DrawString("Hello World!", font, textColor, layout, format);
 
         SamplePage1();
+
+		SamplePage2();
 
         MemoryStream PdfStream = new();
 		document.Save(PdfStream);
@@ -42,6 +46,38 @@ public static class Editions
    
 
 
+
+
+	private static void DefineStyles(Document doc)
+	{
+		// Get the predefined style Normal.
+		Style style = doc.Styles["Normal"];
+		// Because all styles are derived from Normal, the next line changes the
+		// font of the whole document. Or, more exactly, it changes the font of
+		// all styles and paragraphs that do not redefine the font.
+		style.Font.Name = "OpenSans-Regular";
+
+		style = doc.Styles[StyleNames.Header];
+        style.Font.Name = "OpenSans-Regular";
+        style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
+
+		style = doc.Styles[StyleNames.Footer];
+		style.Font.Name = "OpenSans-Regular";
+		style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
+
+		// Create a new style called Table based on style Normal
+		style = doc.Styles.AddStyle("Table", "Normal");
+		style.Font.Name = "OpenSans-Regular";
+		style.Font.Size = 9;
+
+		// Create a new style called Reference based on style Normal
+		style = doc.Styles.AddStyle("Reference", "Normal");
+		style.ParagraphFormat.SpaceBefore = "5mm";
+		style.ParagraphFormat.SpaceAfter = "5mm";
+		style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
+	}
+
+	
     static void SamplePage1()
 	{
 		PdfPage page = document.AddPage();
@@ -90,40 +126,48 @@ public static class Editions
 		docRenderer.RenderObject(gfx, XUnit.FromCentimeter(5), XUnit.FromCentimeter(10), "12cm", para);
 	}
 
-
-	private static void DefineStyles(Document doc)
+    static void SamplePage2()
 	{
-		// Get the predefined style Normal.
-		Style style = doc.Styles["Normal"];
-		// Because all styles are derived from Normal, the next line changes the
-		// font of the whole document. Or, more exactly, it changes the font of
-		// all styles and paragraphs that do not redefine the font.
-		style.Font.Name = "OpenSans-Regular";
+         string text = "Facin exeraessisit la consenim iureet dignibh eu facilluptat vercil dunt autpat. " +
+                "Ecte magna faccum dolor sequisc iliquat, quat, quipiss equipit accummy niate magna " +
+                "facil iure eraesequis am velit, quat atis dolore dolent luptat nulla adio odipissectet " +
+                "lan venis do essequatio conulla facillandrem zzriusci bla ad minim inis nim velit eugait " +
+                "aut aut lor at ilit ut nulla ate te eugait alit augiamet ad magnim iurem il eu feuissi.\n" +
+                "Guer sequis duis eu feugait luptat lum adiamet, si tate dolore mod eu facidunt adignisl in " +
+                "henim dolorem nulla faccum vel inis dolutpatum iusto od min ex euis adio exer sed del " +
+                "dolor ing enit veniamcon vullutat praestrud molenis ciduisim doloborem ipit nulla consequisi.\n" +
+                "Nos adit pratetu eriurem delestie del ut lumsandreet nis exerilisit wis nos alit venit praestrud " +
+                "dolor sum volore facidui blaor erillaortis ad ea augue corem dunt nis  iustinciduis euisi.\n" +
+                "Ut ulputate volore min ut nulpute dolobor sequism olorperilit autatie modit wisl illuptat dolore " +
+                "min ut in ute doloboreet ip ex et am dunt at.";
 
-		style = doc.Styles[StyleNames.Header];
-        style.Font.Name = "OpenSans-Regular";
-        style.ParagraphFormat.AddTabStop("16cm", TabAlignment.Right);
+        PdfPage page = document.AddPage();
+        XGraphics gfx = XGraphics.FromPdfPage(page);
+        XFont font = new XFont("Times New Roman", 10, XFontStyle.Bold);
+        XTextFormatter tf = new XTextFormatter(gfx);
 
-		style = doc.Styles[StyleNames.Footer];
-		style.Font.Name = "OpenSans-Regular";
-		style.ParagraphFormat.AddTabStop("8cm", TabAlignment.Center);
+        XRect rect = new XRect(40, 100, 250, 220);
+        gfx.DrawRectangle(XBrushes.SeaShell, rect);
+        //tf.Alignment = ParagraphAlignment.Left;
+        tf.DrawString(text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-		// Create a new style called Table based on style Normal
-		style = doc.Styles.AddStyle("Table", "Normal");
-		style.Font.Name = "OpenSans-Regular";
-		style.Font.Size = 9;
+        rect = new XRect(310, 100, 250, 220);
+        gfx.DrawRectangle(XBrushes.SeaShell, rect);
+        tf.Alignment = XParagraphAlignment.Right;
+        tf.DrawString(text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-		// Create a new style called Reference based on style Normal
-		style = doc.Styles.AddStyle("Reference", "Normal");
-		style.ParagraphFormat.SpaceBefore = "5mm";
-		style.ParagraphFormat.SpaceAfter = "5mm";
-		style.ParagraphFormat.TabStops.AddTabStop("16cm", TabAlignment.Right);
-	}
+        rect = new XRect(40, 400, 250, 220);
+        gfx.DrawRectangle(XBrushes.SeaShell, rect);
+        tf.Alignment = XParagraphAlignment.Center;
+        tf.DrawString(text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-	
+        rect = new XRect(310, 400, 250, 220);
+        gfx.DrawRectangle(XBrushes.SeaShell, rect);
+        tf.Alignment = XParagraphAlignment.Justify;
+    }
 
 
-	public static byte[] DrawGraphics()
+    public static byte[] DrawGraphics()
 	{
 		// Create Document with info
 		document = new();
@@ -172,6 +216,9 @@ public static class Editions
 
 		return PdfStream.ToArray();
 	}
+
+
+
 
 
 	private static void DrawHeaderBottomText(PdfPage page, XGraphics gfx, string title)
