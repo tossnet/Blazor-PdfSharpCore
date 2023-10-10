@@ -46,4 +46,10 @@ public partial class FetchData
         byte[] pdf = Share.PDF.Tables.PDFAdvancedTable();
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "advancedtable.pdf", pdf);
     }
+
+	async Task PDFTableMulitPageClick()
+    {
+        byte[] pdf = Share.PDF.TableMultiPage.GetPDF();
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "tablemultipage.pdf", pdf);
+    }
 }

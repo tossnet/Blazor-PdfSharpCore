@@ -69,7 +69,7 @@ public static class MixMigraSharp
         new XRect(100, 100, page.Width - 200, 300), XStringFormats.Center);
 
         // You always need a MigraDocCore document for rendering.
-        Document doc = new Document();
+        Document doc = new();
         Section sec = doc.AddSection();
         // Add a single paragraph with some text and format information.
         Paragraph para = sec.AddParagraph();
@@ -144,7 +144,7 @@ public static class MixMigraSharp
     private static Document CreateDocument()
     {
         // Create a new MigraDocCore document
-        Document document = new Document();
+        Document document = new();
 
         // Add a section to the document
         Section section = document.AddSection();

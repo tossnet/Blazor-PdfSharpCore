@@ -6,6 +6,7 @@ using PdfSharpCore.Drawing;
 using CommonModels;
 using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.DocumentObjectModel;
+using MigraDocCore.Rendering;
 
 public static class Tables
 {
@@ -89,6 +90,7 @@ public static class Tables
         return PdfStream.ToArray();
     }
 
+    
 
     private static void DefineStyles(Document doc)
     {
@@ -116,7 +118,8 @@ public static class Tables
         style = doc.Styles.AddStyle("Reference", "Normal");
         style.ParagraphFormat.SpaceBefore = "5mm";
         style.ParagraphFormat.SpaceAfter = "5mm";
-    }
+
+     }
 
 
     private static Table CreateTable(Document document, WeatherForecast[] forecasts)
@@ -178,6 +181,8 @@ public static class Tables
 
         Table table = new();
         table.Borders.Width = 0.75;
+        table.TopPadding = 200;
+        table.BottomPadding = 250;
 
         Column column = table.AddColumn(Unit.FromCentimeter(3));
         column.Format.Alignment = ParagraphAlignment.Center;
@@ -321,6 +326,9 @@ public static class Tables
 
         //doc.LastSection.Add(table);
     }
+
+
+   
 
 
     private static void FillContent(Document doc)

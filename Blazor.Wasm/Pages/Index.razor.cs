@@ -81,4 +81,12 @@ public partial class Index
 
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "MultiPages.pdf", pdf);
     }
+
+
+    async Task HelloMigraDocCoreClick()
+    {
+        byte[] pdf = Share.PDF.HelloMigraDocCore.GetRendered();
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "HelloMigraDocCore.pdf", pdf);
+    }
 }
