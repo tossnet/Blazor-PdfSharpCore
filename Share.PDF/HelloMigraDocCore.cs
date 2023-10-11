@@ -13,9 +13,6 @@ public class HelloMigraDocCore
         // Create a MigraDocCore document
         Document document = CreateDocument();
 
-        //string ddl = MigraDocCore.DocumentObjectModel.IO.DdlWriter.WriteToString(document);
-        //MigraDocCore.DocumentObjectModel.IO.DdlWriter.WriteToFile(document, "MigraDocCore.mdddl");
-
         PdfDocumentRenderer renderer = new(true);
         renderer.Document = document;
 
@@ -30,7 +27,7 @@ public class HelloMigraDocCore
     private static Document CreateDocument()
     {
         // Create a new MigraDocCore document
-        Document document = new Document();
+        Document document = new );
         document.Info.Title = "Hello, MigraDocCore";
         document.Info.Subject = "Demonstrates an excerpt of the capabilities of MigraDocCore.";
         document.Info.Author = "Stefan Lange";
