@@ -27,7 +27,7 @@ public class HelloMigraDocCore
     private static Document CreateDocument()
     {
         // Create a new MigraDocCore document
-        Document document = new );
+        Document document = new();
         document.Info.Title = "Hello, MigraDocCore";
         document.Info.Subject = "Demonstrates an excerpt of the capabilities of MigraDocCore.";
         document.Info.Author = "Stefan Lange";
