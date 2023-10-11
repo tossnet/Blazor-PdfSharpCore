@@ -4,42 +4,55 @@
 
 <h1>Generate PDF documents!</h1>
 
-<p>Example of using <a href="https://github.com/tossnet/Blazor-PdfSharpCore">PdfSharpCore library in a Blazor Webassembly App</a></p>
+<h2>by using PDFsharp & MigraDoc</h2>
+<ul>
+	<li><a href="https://docs.pdfsharp.net/" target="_blank">https://docs.pdfsharp.net/</a> </li>
+	<li><a href="https://github.com/ststeiger/PdfSharpCore" target="_blank">https://github.com/ststeiger/PdfSharpCore</a></li>
+</ul>
 
-<button class="btn btn-primary"
+<p>Example of using <a href="https://github.com/tossnet/Blazor-PdfSharpCore" target="_blank">PdfSharpCore library in a Blazor Webassembly App</a></p>
+
+<button class="btn btn-primary mb-3"
 		@onclick="HelloWord">
 	Hello World!
 </button>
 
-<button class="btn btn-secondary" 
+<button class="btn btn-secondary mb-3"
 		@onclick="DrawGraphics">
 	Draw Graphics
 </button>
 
-<button class="btn btn-success"
+<br />
+
+<button class="btn btn-danger mb-3"
+		@onclick="HelloMigraDocCoreClick">
+	Hello MigraDocCore
+</button>
+
+<br />
+
+<button class="btn btn-success mb-3"
 		@onclick="PrintTable">
 	Print Table
 </button>
 
+<br />
+<p>Here, still problems with Unicode :
 
-<button class="btn btn-warning"
+<button class="btn btn-warning mb-3"
 		@onclick="PrintUnicode">
 	⛑️Unicode Sample
 </button>
+</p>
+<br />
 
-
-<button class="btn btn-info"
+<button class="btn btn-info mb-3"
 		@onclick="MixMigraSharpClick">
 	Mix Migra and SharpCore
 </button>
 
 
-<button class="btn btn-warning"
+<button class="btn btn-warning mb-3"
 		@onclick="MultiPageClick">
 	Multi Page
-</button>
-
-<button class="btn btn-danger"
-		@onclick="HelloMigraDocCoreClick">
-	Hello MigraDocCore
 </button>

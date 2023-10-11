@@ -1,4 +1,6 @@
-# Blazor.PDFSharpCode
+# Blazor (Server or Wasm) PDFSharpCode MigraDocCore
+
+DEMO : https://tossnet.github.io/Blazor-PdfSharpCore/
 
 Example of use of the [library PdfSharpCore](https://github.com/ststeiger/PdfSharpCore) with Blazor Server and Blazor Webassembly to create PDF docucments.
 
