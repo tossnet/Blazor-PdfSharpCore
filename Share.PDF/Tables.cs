@@ -136,8 +136,8 @@ public static class Tables
 
         // Create a new style called Table based on style Normal
         style = doc.Styles.AddStyle("Table", "Normal");
-        style.Font.Name = "OpenSans-Regular";
-        style.Font.Size = 9;
+        style.Font.Name = "Arial";
+        style.Font.Size = 8;
 
         // Create a new style called Reference based on style Normal
         style = doc.Styles.AddStyle("Reference", "Normal");
@@ -152,6 +152,7 @@ public static class Tables
         document.LastSection.AddParagraph("Simple Table", "Heading2");
 
         Table table = new();
+        table.Style = "Table";
         table.Borders.Width = 0.75;
 
         Column column = table.AddColumn(Unit.FromCentimeter(3));

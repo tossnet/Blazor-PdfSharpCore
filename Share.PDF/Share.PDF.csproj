@@ -16,8 +16,4 @@
     <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="images\" />
-  </ItemGroup>
-
 </Project>
