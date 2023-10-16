@@ -35,7 +35,9 @@ public partial class FetchData
 
 	async Task PDFTable()
 	{
-		byte[] pdf = Share.PDF.Tables.PDFTable(forecasts);
+        string imagefile = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\BackwardDiagonal.png"}";
+
+        byte[] pdf = Share.PDF.Tables.PDFTable(forecasts, imagefile);
 
 		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "table.pdf", pdf);
 	}

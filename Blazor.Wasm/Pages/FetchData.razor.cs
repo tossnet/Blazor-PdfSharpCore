@@ -8,6 +8,10 @@ using Microsoft.JSInterop;
 using PdfSharpCore.Fonts;
 using CommonModels;
 using Share.PDF.Models;
+using System.IO;
+using System.Collections;
+using System;
+using SixLabors.ImageSharp.Memory;
 
 
 public partial class FetchData
@@ -22,6 +26,7 @@ public partial class FetchData
     protected override async Task OnInitializedAsync()
     {
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -35,23 +40,20 @@ public partial class FetchData
 
             try
             {
-                //if (GlobalFontSettings.FontResolver is not CustomFontResolver)
-                //{
-                //if (GlobalFontSettings.FontResolver  == null)
-                //{
                 GlobalFontSettings.FontResolver = new CustomFontResolver(font);
-                //}
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message.ToString());
             }
         }
+
     }
 
     async Task PDFTable()
     {
-        byte[] pdf = Share.PDF.Tables.PDFTable(forecasts);
+        var imageFile = await GetImage();
+        byte[] pdf = Share.PDF.Tables.PDFTable(forecasts, imageFile);
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "table.pdf", pdf);
     }
 
@@ -61,4 +63,18 @@ public partial class FetchData
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "advancedtable.pdf", pdf);
     }
 
+    async Task<byte[]> GetImage()
+    {
+        using var response = await Http.GetAsync("images/BackwardDiagonal.png");
+        response.EnsureSuccessStatusCode();
+        Stream ms = await response.Content.ReadAsStreamAsync();
+        byte[] byteArray;
+        using (MemoryStream memoryStream = new())
+        {
+            ms.CopyTo(memoryStream);
+
+            byteArray = memoryStream.ToArray();
+        }
+        return byteArray; 
+    }
 }

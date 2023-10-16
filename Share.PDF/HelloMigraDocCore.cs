@@ -4,7 +4,7 @@ using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.DocumentObjectModel;
 using MigraDocCore.Rendering;
 using MigraDocCore.DocumentObjectModel.Shapes.Charts;
-
+using PdfSharpCore.Pdf;
 
 public class HelloMigraDocCore
 {
@@ -13,8 +13,18 @@ public class HelloMigraDocCore
         // Create a MigraDocCore document
         Document document = CreateDocument();
 
+
         PdfDocumentRenderer renderer = new(true);
+
+        //renderer.PdfDocument = new();
+        //renderer.PdfDocument.Options.FlateEncodeMode = PdfFlateEncodeMode.BestSpeed;
+        //renderer.PdfDocument.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+        //renderer.PdfDocument.Options.NoCompression = false;
+        //// Defaults to false in debug build, so we set it to true.
+        //renderer.PdfDocument.Options.CompressContentStreams = true;
+
         renderer.Document = document;
+
 
         renderer.RenderDocument();
 

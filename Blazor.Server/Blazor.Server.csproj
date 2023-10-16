@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wwwroot\images\logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\images\logo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\BackwardDiagonal.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="PdfSharpCore" Version="1.3.62" />
   </ItemGroup>
 
