@@ -66,4 +66,12 @@ public partial class Index
 
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "HelloMigraDocCore.pdf", pdf);
     }
+
+    async Task OrderClick()
+    {
+        string imagefile = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\images\logo-fake.png"}";
+        byte[] pdf = Share.PDF.Order.Edition(imagefile);
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "Order.pdf", pdf);
+    }
 }

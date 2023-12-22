@@ -9,9 +9,7 @@ using PdfSharpCore.Fonts;
 using CommonModels;
 using Share.PDF.Models;
 using System.IO;
-using System.Collections;
 using System;
-using SixLabors.ImageSharp.Memory;
 
 
 public partial class FetchData
@@ -52,7 +50,7 @@ public partial class FetchData
 
     async Task PDFTable()
     {
-        var imageFile = await GetImage();
+        var imageFile = await GetImage("images/BackwardDiagonal.png");
         byte[] pdf = Share.PDF.Tables.PDFTable(forecasts, imageFile);
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "table.pdf", pdf);
     }
@@ -63,9 +61,9 @@ public partial class FetchData
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "advancedtable.pdf", pdf);
     }
 
-    async Task<byte[]> GetImage()
+    async Task<byte[]> GetImage(string imageSource)
     {
-        using var response = await Http.GetAsync("images/BackwardDiagonal.png");
+        using var response = await Http.GetAsync(imageSource);
         response.EnsureSuccessStatusCode();
         Stream ms = await response.Content.ReadAsStreamAsync();
         byte[] byteArray;

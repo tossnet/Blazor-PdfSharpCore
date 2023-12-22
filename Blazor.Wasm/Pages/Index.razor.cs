@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using PdfSharpCore.Fonts;
 using Share.PDF.Models;
+using static System.Net.WebRequestMethods;
 
 public partial class Index
 {
 	[Inject] public IJSRuntime JS { get; set; }
 	[Inject] public FontServices FontService { get; set; }
     [Inject] public NavigationManager nav { get; set; }
+	[Inject] public HttpClient Http { get; set; }
 
     private const string JAVASCRIPT_FILE = "./js/javascript.js";
 	private IJSObjectReference JsModule { get; set; } = default!;
@@ -88,5 +90,29 @@ public partial class Index
         byte[] pdf = Share.PDF.HelloMigraDocCore.GetRendered();
 
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "HelloMigraDocCore.pdf", pdf);
+    }
+
+    async Task OrderClick()
+    {
+        var imageFile = await GetImage("images/logo-fake.png");
+        byte[] pdf = Share.PDF.Order.Edition(imageFile);
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "Order.pdf", pdf);
+    }
+
+
+    async Task<byte[]> GetImage(string imageSource)
+    {
+        using var response = await Http.GetAsync(imageSource);
+        response.EnsureSuccessStatusCode();
+        Stream ms = await response.Content.ReadAsStreamAsync();
+        byte[] byteArray;
+        using (MemoryStream memoryStream = new())
+        {
+            ms.CopyTo(memoryStream);
+
+            byteArray = memoryStream.ToArray();
+        }
+        return byteArray;
     }
 }
