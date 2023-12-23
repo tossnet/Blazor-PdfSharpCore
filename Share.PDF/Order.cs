@@ -3,7 +3,6 @@
 using MigraDocCore.DocumentObjectModel.Tables;
 using MigraDocCore.DocumentObjectModel;
 using MigraDocCore.Rendering;
-using CommonModels;
 using MigraDocCore.DocumentObjectModel.MigraDoc.DocumentObjectModel.Shapes;
 using MigraDocCore.DocumentObjectModel.Shapes;
 using PdfSharpCore.Utils;
@@ -14,17 +13,25 @@ public static class Order
     private static Document document;
     private static byte[] _imageArray;
     private static string _imagefile;
+    private static string _fontName ;
 
     public static byte[] Edition(string imagefile)
     {
+        // Call from Server
         _imagefile = imagefile;
+        
+        _fontName = "Arial";
 
         return CreatePDF();
     }
 
     public static byte[] Edition(byte[] imageArray)
     {
-        _imageArray = imageArray;
+       // Call from webAssembly
+       _imageArray = imageArray;
+
+        // I force the font name because the font is not loaded in the server
+        _fontName = "OpenSans-Regular";
 
         return CreatePDF();
     }
@@ -40,6 +47,13 @@ public static class Order
         Section section = document.AddSection();
         section.PageSetup.PageFormat = PageFormat.A4;
         section.PageSetup.Orientation = Orientation.Portrait;
+        section.PageSetup.TopMargin = "0.4cm";
+        section.PageSetup.LeftMargin = "1cm";
+        section.PageSetup.RightMargin = "1cm";
+        //section.PageSetup.BottomMargin = "0cm";
+        section.PageSetup.FooterDistance = "0.8cm";
+        section.PageSetup.OddAndEvenPagesHeaderFooter = false;
+        section.PageSetup.StartingNumber = 1;
 
         DefineStyles();
         DefineContentSection();
@@ -82,7 +96,7 @@ public static class Order
         // Because all styles are derived from Normal, the next line changes the
         // font of the whole document. Or, more exactly, it changes the font of
         // all styles and paragraphs that do not redefine the font.
-        style.Font.Name = "Arial";
+        style.Font.Name = _fontName;
 
         style = document.Styles["Heading1"];
         style.Font.Size = 14;
@@ -119,14 +133,6 @@ public static class Order
     private static void DefineContentSection()
     {
         Section section = document.LastSection;
-        section.PageSetup.OddAndEvenPagesHeaderFooter = false;
-        section.PageSetup.StartingNumber = 1;
-        //section.PageSetup.LeftMargin = "1cm";
-        section.PageSetup.RightMargin = "1cm";
-        //section.PageSetup.TopMargin = "1cm";
-        //section.PageSetup.BottomMargin = "0cm";
-        section.PageSetup.FooterDistance = "0.8cm";
-
 
         Paragraph footerParagraph = section.Footers.Primary.AddParagraph();
         footerParagraph.Format.Alignment = ParagraphAlignment.Center;
@@ -170,7 +176,6 @@ public static class Order
 
         Section section = document.LastSection;
 
-        //var image = section.Headers.Primary.AddImage("../../../../assets/images/MigraDoc.png");
         var imageM = section.Headers.Primary.AddImage(image);
         imageM.Height = "2cm";
         imageM.LockAspectRatio = true;
@@ -184,12 +189,11 @@ public static class Order
     private static void RenderReferences()
     {
         Section section = document.LastSection;
-        section.PageSetup.LeftMargin = "1.0cm";
-        section.PageSetup.TopMargin = "5.5cm";
 
         Paragraph paragraph = section.AddParagraph();
 
         paragraph.Format.Font.Size = 9;
+        paragraph.Format.SpaceBefore = "4.5cm";
 
         paragraph.AddText("Date : " + DateTime.Today.ToShortDateString());
         paragraph.AddLineBreak();
@@ -258,14 +262,14 @@ public static class Order
         headingRow.Cells[2].AddParagraph("Qté");
         headingRow.Cells[3].AddParagraph("Total");
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             Row row = table.AddRow();
             row.Cells[0].AddParagraph($"{i}\tProduct {i}");
 
             row = table.AddRow();
             Cell cell = row.Cells[0]; // Remplacez par l'indice de votre cellule
-            Paragraph paragraph = cell.AddParagraph("\tTexte en ");
+            Paragraph paragraph = cell.AddParagraph("\t Texte en ");
             paragraph.AddFormattedText("gras", TextFormat.Bold);
             paragraph.AddText(" et ");
             paragraph.AddFormattedText("italique", TextFormat.Italic);

@@ -94,7 +94,7 @@ public partial class Index
 
     async Task OrderClick()
     {
-        var imageFile = await GetImage("images/logo-fake.png");
+        byte[] imageFile = await GetImage("images/logo-fake.png");
         byte[] pdf = Share.PDF.Order.Edition(imageFile);
 
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "Order.pdf", pdf);
