@@ -4,8 +4,9 @@ using Blazor.Wasm.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using PdfSharpCore.Fonts;
+using PdfSharpCore.Pdf.IO;
+using PdfSharpCore.Pdf;
 using Share.PDF.Models;
-using static System.Net.WebRequestMethods;
 
 public partial class Index
 {
@@ -20,25 +21,25 @@ public partial class Index
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender)
+		if (!firstRender)
+			return;
+		
+		JsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
+
+		Fonts font = await FontService.LoadFonts();
+
+		try
 		{
-			JsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
-
-			Fonts font = await FontService.LoadFonts();
-
-			try
-			{
-				//if (GlobalFontSettings.FontResolver is not CustomFontResolver)
-				//{
-				//if (GlobalFontSettings.FontResolver  == null)
-				//{
-				GlobalFontSettings.FontResolver = new CustomFontResolver(font);
-				//}
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message.ToString());
-			}
+			//if (GlobalFontSettings.FontResolver is not CustomFontResolver)
+			//{
+			//if (GlobalFontSettings.FontResolver  == null)
+			//{
+			GlobalFontSettings.FontResolver = new CustomFontResolver(font);
+			//}
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e.Message.ToString());
 		}
 	}
 
@@ -91,6 +92,24 @@ public partial class Index
 
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "HelloMigraDocCore.pdf", pdf);
     }
+
+	async Task HelloWordCombine()
+	{
+        MemoryStream pdf1 = Share.PDF.Editions.HelloWordStream();
+        MemoryStream pdf2 = Share.PDF.Editions.HelloWordStream();
+
+        // Open the output document
+        PdfDocument combineDocument = new();
+
+        combineDocument = Share.PDF.Tools.Combine(pdf1, combineDocument);
+        combineDocument = Share.PDF.Tools.Combine(pdf2, combineDocument);
+
+        MemoryStream PdfStream = new();
+        combineDocument.Save(PdfStream);
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "CombineDoc.pdf", PdfStream.ToArray());
+    }
+
 
     async Task OrderClick()
     {
