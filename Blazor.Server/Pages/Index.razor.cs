@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 using PdfSharpCore.Fonts;
+using PdfSharpCore.Pdf.IO;
+using PdfSharpCore.Pdf;
 using PdfSharpCore.Utils;
 
 public partial class Index
@@ -16,22 +18,23 @@ public partial class Index
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender)
-		{
-			JsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
+		if (!firstRender)
+			return;
+		
+		JsModule ??= await JS.InvokeAsync<IJSObjectReference>("import", JAVASCRIPT_FILE);
 
-			if (PdfSharpCore.Fonts.GlobalFontSettings.FontResolver is not FontResolver)
-			{
-				GlobalFontSettings.FontResolver = new FontResolver();
-			}
-        }
+		if (PdfSharpCore.Fonts.GlobalFontSettings.FontResolver is not FontResolver)
+		{
+			GlobalFontSettings.FontResolver = new FontResolver();
+		}
+        
 	}
 
 	async Task HelloWord()
 	{
 		byte[] pdf = Share.PDF.Editions.HelloWord();
 
-		await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "sample.pdf", pdf);
 	}
 
 	async Task DrawGraphics()
@@ -73,5 +76,22 @@ public partial class Index
         byte[] pdf = Share.PDF.Order.Edition(imagefile);
 
         await JsModule.InvokeVoidAsync("BlazorDownloadFile", "Order.pdf", pdf);
+    }
+
+    async Task HelloWordCombine()
+    {
+        MemoryStream pdf1 = Share.PDF.Editions.HelloWordStream();
+        MemoryStream pdf2 = Share.PDF.Editions.HelloWordStream();
+
+        // Open the output document
+        PdfDocument combineDocument = new();
+
+        combineDocument = Share.PDF.Tools.Combine(pdf1, combineDocument);
+        combineDocument = Share.PDF.Tools.Combine(pdf2, combineDocument);
+
+        MemoryStream PdfStream = new();
+        combineDocument.Save(PdfStream);
+
+        await JsModule.InvokeVoidAsync("BlazorDownloadFile", "CombineDoc.pdf", PdfStream.ToArray());
     }
 }

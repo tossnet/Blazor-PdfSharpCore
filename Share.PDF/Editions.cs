@@ -16,39 +16,44 @@ public static class Editions
 
     public static byte[] HelloWord()
 	{
-		// Create Document with info
-		document = new();
+		return HelloWordStream().ToArray();
+	}
+
+    public static MemoryStream HelloWordStream()
+    {
+        // Create Document with info
+        document = new();
         Common.DocumentInfo(document, "Hello world");
 
-		// Create new page
-		var page = document.AddPage();
-		var gfx = XGraphics.FromPdfPage(page);
+        // Create new page
+        var page = document.AddPage();
+        var gfx = XGraphics.FromPdfPage(page);
         //XFont font = new("OpenSans-Regular", 20, XFontStyle.Regular);
         XFont font = new("Arial", 20, XFontStyle.Regular);
 
         var textColor = XBrushes.Black;
-		var layout = new XRect(0, 0, page.Width, page.Height);
-		var format = XStringFormats.Center;
+        var layout = new XRect(0, 0, page.Width, page.Height);
+        var format = XStringFormats.Center;
 
-		gfx.DrawString("Hello World!", font, textColor, layout, format);
+        gfx.DrawString("Hello World!", font, textColor, layout, format);
 
         SamplePage1();
 
-		SamplePage2();
+        SamplePage2();
 
         MemoryStream PdfStream = new();
-		document.Save(PdfStream);
+        document.Save(PdfStream);
 
-		return PdfStream.ToArray();
-	}
-
-
-   
+        return PdfStream;
+    }
 
 
 
 
-	private static void DefineStyles(Document doc)
+
+
+
+    private static void DefineStyles(Document doc)
 	{
 		// Get the predefined style Normal.
 		Style style = doc.Styles["Normal"];
